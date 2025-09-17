@@ -14,7 +14,7 @@ foreach ($file in $public) {
 }
 
 # Private: only internaly, not exportable
-$privateParams = @ {
+$privateParams = @{
     Path = (Join-Path $PSScriptRoot "Private")
     Filer = '*ps1'
     ErrorAction = SilentlyContinue
