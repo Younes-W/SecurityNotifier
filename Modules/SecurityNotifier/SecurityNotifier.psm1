@@ -17,7 +17,7 @@ foreach ($file in $public) {
 $privateParams = @{
     Path = (Join-Path $PSScriptRoot "Private")
     Filer = '*.ps1'
-    ErrorAction = SilentlyContinue
+    ErrorAction = 'SilentlyContinue'
 }
 
 $private = Get-ChildItem @privateParams
