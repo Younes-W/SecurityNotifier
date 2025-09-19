@@ -1,3 +1,21 @@
+<#
+.SYNOPSIS
+    Tests if a password has been exposed in known data breaches.
+
+.DESCRIPTION
+    Uses the HaveIBeenPwned PwnedPasswords API (k-Anonymity model).
+    Only the first 5 characters of the SHA1 hash are sent to the API.
+    The suffix is compared locally, so the full password is never exposed.
+
+.PARAMETER Password
+    The password to check (provided as SecureString).
+
+.EXAMPLE
+    PS> Test-PwnedPassword -Password (Read-Host "Enter password" -AsSecureString)
+
+    Returns a custom object showing whether the password was found,
+    how many times it appeared, and the hash details.
+#>
 function Test-PwnedPassword {
     [CmdletBinding()]
     param (
