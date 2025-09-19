@@ -1,11 +1,11 @@
-# 🔐 SecurityNotifier
+# SecurityNotifier
 
 SecurityNotifier is a PowerShell toolkit to run security-related checks and send notifications.  
 It is designed in a modular way so you can easily add new APIs and functions.
 
 ---
 
-## 📦 Available Modules
+## Available Modules
 
 ### 1. PwnedPasswords
 Check if a password has been exposed in data breaches using the HaveIBeenPwned API.  
@@ -22,7 +22,7 @@ Check files or URLs against multi-AV scan results.
 
 ---
 
-## 🔧 Installation
+## Installation
 ```powershell
 git clone https://github.com/<YourUsername>/SecurityNotifier.git
 cd SecurityNotifier
@@ -31,7 +31,7 @@ Import-Module ./Modules/SecurityNotifier/SecurityNotifier.psd1
 
 ---
 
-## 🚀 Usage Examples
+## Usage Examples
 ### Example: Check a password
 ```powershell
 Test-PwnedPassword -Password (Read-Host "Enter password" -AsSecureString)
@@ -39,7 +39,7 @@ Test-PwnedPassword -Password (Read-Host "Enter password" -AsSecureString)
 
 ---
 
-## 🔐 PwnedPasswords Module
+## PwnedPasswords Module
 
 The **SecurityNotifier** PowerShell module helps you check whether a password has been exposed in known data breaches using the [HaveIBeenPwned PwnedPasswords API](https://haveibeenpwned.com/Passwords).
 
@@ -47,7 +47,7 @@ This is the **first finished module** of the SecurityNotifier project.
 
 ---
 
-### ✨ Features
+### Features
 - Secure input with `SecureString`
 - Uses the **k-Anonymity model**:  
   Only the first 5 characters of the SHA1 hash are sent to the API.  
@@ -56,7 +56,7 @@ This is the **first finished module** of the SecurityNotifier project.
 
 ---
 
-### 🚀 Usage
+### Usage
 
 #### Check password interactively
 ```powershell
@@ -70,7 +70,7 @@ Test-PwnedPassword -Password ("MyPassword123" | ConvertTo-SecureString -AsPlainT
 
 ---
 
-### 📋 Output Example
+### Output Example
 ```powershell
 Found     : True
 Count     : 5321
@@ -82,7 +82,7 @@ CheckedAt : 2025-09-19T09:59:00.0000000Z
 
 ---
 
-## 🛠 Roadmap
+## Roadmap
 - [x] Implement `PwnedPasswords` check
 - [ ] Add logging to file
 - [ ] Add optional email/Discord notifications
@@ -90,5 +90,5 @@ CheckedAt : 2025-09-19T09:59:00.0000000Z
 
 ---
 
-## 📜 License
+## License
 MIT License © 2025 Younes Wimmer
