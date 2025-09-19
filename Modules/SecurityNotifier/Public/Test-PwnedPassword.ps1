@@ -2,7 +2,7 @@ function Test-PwnedPassword {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
-        [string]$Password
+        [securestring]$Password
     )
     
     begin {
@@ -10,7 +10,8 @@ function Test-PwnedPassword {
     }
     
     process {
-        $hash = Get-Sha1Hash -String $Password
+        $plainPassword = [System.Net.NetworkCredential]::new("", $Password).Password
+        $hash = Get-Sha1Hash -String $plainPassword
         $prefix = $hash.Substring(0,5)
         $suffix = $hash.Substring(5)
 
