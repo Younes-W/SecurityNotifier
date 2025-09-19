@@ -7,7 +7,6 @@ $privateParams = @{
 
 $private = Get-ChildItem @privateParams
 foreach ($file in $private) {
-
     . $file.FullName
 }
 
