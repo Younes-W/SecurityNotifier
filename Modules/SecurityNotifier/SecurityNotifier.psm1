@@ -1,5 +1,18 @@
 # Load all functions from public and private directories
 
+# Private: only internaly, not exportable
+$privateParams = @{
+    Path = (Join-Path $PSScriptRoot "Private")
+    Filter = '*.ps1'
+    ErrorAction = 'SilentlyContinue'
+}
+
+$private = Get-ChildItem @privateParams
+
+foreach ($file in $private) {
+    . $file.FullName
+}
+
 # Public: for User accessible
 $publicParams = @{
     Path = (Join-Path $PSScriptRoot "Public")
@@ -13,20 +26,7 @@ foreach ($file in $public) {
     . $file.FullName
 }
 
-# Private: only internaly, not exportable
-$privateParams = @{
-    Path = (Join-Path $PSScriptRoot "Private")
-    Filer = '*.ps1'
-    ErrorAction = 'SilentlyContinue'
-}
-
-$private = Get-ChildItem @privateParams
-
-foreach ($file in $private) {
-    . $file.FullName
-}
-
 $exportFunctions = $public.BaseName
-Export-ModuleMember -Function $exportFunctions -Alias *
+Export-ModuleMember -Function $exportFunctions
 
 

@@ -1,0 +1,34 @@
+function Test-PwnedPassword {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory)]
+        [string]$Password
+    )
+    
+    begin {
+        
+    }
+    
+    process {
+        $hash = Get-Sha1Hash -String $Password
+        $prefix = $hash.Substring(0,5)
+        $suffix = $hash.Substring(5)
+
+        $rangeResponse = Invoke-PwnedRange -Prefix $prefix
+
+        $foundCount = Get-PwnedMatchCount -Suffix $suffix -RangeResponse $rangeResponse
+        
+        [PSCustomObject]@{
+            Found = ($foundCount -gt 0)
+            Count = $foundCount
+            SHA1 = $hash
+            Prefix = $prefix
+            Suffix = $suffix
+            CheckedAt = (Get-Date).ToString("o")
+        }
+    }
+    
+    end {
+        
+    }
+}
