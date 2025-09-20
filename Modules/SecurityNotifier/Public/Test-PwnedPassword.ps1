@@ -28,22 +28,33 @@ function Test-PwnedPassword {
     }
     
     process {
-        $plainPassword = [System.Net.NetworkCredential]::new("", $Password).Password
-        $hash = Get-Sha1Hash -String $plainPassword
-        $prefix = $hash.Substring(0,5)
-        $suffix = $hash.Substring(5)
+        try {
+            $plainPassword = [System.Net.NetworkCredential]::new("", $Password).Password
+            $hash = Get-Sha1Hash -String $plainPassword
+            
+            if ($hash.Length -ne 40) {
+                throw "Unexpected SHA1 hash length ($($hash.Length))."
+            }
+            
+            $prefix = $hash.Substring(0,5).ToUpperInvariant()
+            $suffix = $hash.Substring(5).ToUpperInvariant()
 
-        $rangeResponse = Invoke-PwnedRange -Prefix $prefix
+            $rangeResponse = Invoke-PwnedRange -Prefix $prefix
 
-        $foundCount = Get-PwnedMatchCount -Suffix $suffix -RangeResponse $rangeResponse
+            $foundCount = Get-PwnedMatchCount -Suffix $suffix -RangeResponse $rangeResponse
         
-        [PSCustomObject]@{
-            Found = ($foundCount -gt 0)
-            Count = $foundCount
-            SHA1 = $hash
-            Prefix = $prefix
-            Suffix = $suffix
-            CheckedAt = (Get-Date).ToString("o")
+            [PSCustomObject]@{
+                Found = ($foundCount -gt 0)
+                Count = $foundCount
+                SHA1 = $hash
+                Prefix = $prefix
+                Suffix = $suffix
+                CheckedAt = (Get-Date).ToString("o")
+            }
+
+        }
+        catch {
+            throw "Test-PwnedPassword failed: $($_.Exception.Message)"
         }
     }
     

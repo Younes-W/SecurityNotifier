@@ -5,10 +5,19 @@ function Get-PwnedMatchCount {
 
     )
 
-    foreach ($line in $RangeResponse -split "`n") {
-        $parts = $line -split ':'
-        if ($parts.Length -ge 2 -and $parts[0] -eq $Suffix) {
-            return [int]$parts[1]
+    foreach ($line in $RangeResponse -split "`n") {#
+        $line = $line.Trim()
+        if (-not $line) { continue }
+
+        $parts = $line -split ':', 2
+        if ($parts.Length -ge 2) {
+            $remoteSuffix = $parts[0].Trim().ToUpperInvariant()
+            $normSuffix = $Suffix.Trim().ToUpperInvariant()
+
+            if ($remoteSuffix -eq $normSuffix) {
+                return [int]$parts[1]
+            }
+            
         }
     }
     return 0
