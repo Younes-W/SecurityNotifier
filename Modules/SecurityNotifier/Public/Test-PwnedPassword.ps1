@@ -20,7 +20,7 @@ function Test-PwnedPassword {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
-        [securestring]$Password
+        [SecureString]$Password
     )
     
     begin {
@@ -42,7 +42,10 @@ function Test-PwnedPassword {
             $rangeResponse = Invoke-PwnedRange -Prefix $prefix
 
             $foundCount = Get-PwnedMatchCount -Suffix $suffix -RangeResponse $rangeResponse
-        
+            
+            $foundText = if ($foundCount -gt 0) { "FOUND ($foundCount)" } else { "NOT FOUND" }
+            Write-Log -Message "Password checked -> SHA1=$hash Result =$foundText" -Level "INFO"
+            
             [PSCustomObject]@{
                 Found = ($foundCount -gt 0)
                 Count = $foundCount
@@ -54,8 +57,12 @@ function Test-PwnedPassword {
 
         }
         catch {
-            throw "Test-PwnedPassword failed: $($_.Exception.Message)"
+            $errMsg = $_.Exception.Message
+            if (-not $errMsg) { $errMsg = $_ | Out-String }
+            Write-Log -Message "Test-PwnedPassword failed: $errMsg" -Level "ERROR"
+            throw "Test-PwnedPassword failed: $errMsg"
         }
+
     }
     
     end {
